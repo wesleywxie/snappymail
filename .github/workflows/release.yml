@@ -31,13 +31,12 @@ jobs:
 
     - name: Download Release Zip
       run: |
-        cd .docker/release
         wget https://github.com/the-djmaze/snappymail/releases/download/v${{ github.ref_name }}/snappymail-${{ github.ref_name }}.zip
 
     - name: Build and push
       uses: docker/build-push-action@v4
       with:
-        context: .docker/release
+        context: ./.docker/release/
         build-args: FILES_ZIP=snappymail-${{ github.ref_name }}.zip
         file: ./Dockerfile
         platforms: linux/amd64,linux/arm64

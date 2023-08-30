@@ -44,7 +44,7 @@ RUN mkdir /snappymail && \
     rm -rf ${FILES_ZIP}
 
 # Install other content
-COPY files /
+COPY ./.docker/release/files /
 RUN chmod +x /entrypoint.sh && chmod +x /logrotate-loop.sh
 VOLUME /snappymail/data
 EXPOSE 8888
