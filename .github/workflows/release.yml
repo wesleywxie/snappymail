@@ -36,7 +36,8 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v4
       with:
-        context: ./.docker/release/
+        context: .
+        file: ./.docker/release/Dockerfile
         build-args: FILES_ZIP=snappymail-${{ github.ref_name }}.zip
         file: ./Dockerfile
         platforms: linux/amd64,linux/arm64
