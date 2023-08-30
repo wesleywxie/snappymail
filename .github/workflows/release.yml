@@ -1,0 +1,45 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    tags:
+      - '[0-9]+.*.[0-9]+'  # This ensures the action runs only for tags with a version format
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Debug
+      run: |
+        echo "github.ref -> ${{ github.ref }}"
+        echo "github.ref_name -> ${{ github.ref_name }}"
+    
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_TOKEN }}
+
+    - name: Download Release Zip
+      run: |
+        cd .docker/release
+        wget https://github.com/the-djmaze/snappymail/releases/download/v${{ github.ref_name }}/snappymail-${{ github.ref_name }}.zip
+
+    - name: Build and push
+      uses: docker/build-push-action@v4
+      with:
+        context: .docker/release
+        build-args: FILES_ZIP=snappymail-${{ github.ref_name }}.zip
+        file: ./Dockerfile
+        platforms: linux/amd64,linux/arm64
+        push: true
+        tags: ratneo/snappymail:${{ github.ref_name }}, ratneo/snappymail:latest
