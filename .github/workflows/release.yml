@@ -36,10 +36,8 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v4
       with:
-        context: .
-        file: ./.docker/release/Dockerfile
+        context: ./.docker/release/
         build-args: FILES_ZIP=snappymail-${{ github.ref_name }}.zip
-        file: ./Dockerfile
         platforms: linux/amd64,linux/arm64
         push: true
         tags: ratneo/snappymail:${{ github.ref_name }}, ratneo/snappymail:latest
