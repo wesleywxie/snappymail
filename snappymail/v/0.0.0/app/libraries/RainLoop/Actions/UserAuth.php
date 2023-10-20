@@ -113,7 +113,7 @@ trait UserAuth
 	/**
 	 * @throws \RainLoop\Exceptions\ClientException
 	 */
-	public function LoginProcess(string &$sEmail, string &$sPassword, bool $bSignMe = false, bool $bMainAccount = true): Account
+	public function LoginProcess(string &$sEmail, string &$sPassword, bool $bMainAccount = true): Account
 	{
 		$sInputEmail = $sEmail;
 
@@ -139,7 +139,6 @@ trait UserAuth
 
 		$this->imapConnect($oAccount, true);
 		if ($bMainAccount) {
-			$bSignMe && $this->SetSignMeToken($oAccount);
 			$this->StorageProvider()->Put($oAccount, StorageType::SESSION, Utils::GetSessionToken(), 'true');
 		}
 
@@ -295,9 +294,6 @@ trait UserAuth
 	{
 		$this->oAdditionalAuthAccount = false;
 		$this->oMainAuthAccount = $oAccount;
-		if (!isset($_COOKIE['smctoken'])) {
-			Cookies::set('smctoken', \base64_encode(\random_bytes(16)), 0, false);
-		}
 		static::SetAccountCookie(self::AUTH_SPEC_TOKEN_KEY, $oAccount);
 	}
 
@@ -327,8 +323,14 @@ trait UserAuth
 		return null;
 	}
 
-	private function SetSignMeToken(MainAccount $oAccount): void
+	public function SetSignMeToken(MainAccount $oAccount): void
 	{
+		// SetAuthToken token needs to be called first
+		// because $_COOKIE['smctoken'] is used by Crypt::Passphrase.
+		// If the $_COOKIE['smctoken'] is not set then SetSignMeToken
+		// throws an exception
+//		$this->SetAuthToken($oAccount);
+
 		$this->ClearSignMeData();
 		$uuid = \SnappyMail\UUID::generate();
 		$data = \SnappyMail\Crypt::Encrypt($oAccount);

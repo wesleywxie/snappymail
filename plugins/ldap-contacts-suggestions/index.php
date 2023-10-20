@@ -4,8 +4,8 @@ class LdapContactsSuggestionsPlugin extends \RainLoop\Plugins\AbstractPlugin
 {
 	const
 		NAME     = 'Contacts suggestions (LDAP)',
-		VERSION  = '2.12',
-		RELEASE  = '2023-01-31',
+		VERSION  = '2.13',
+		RELEASE  = '2023-10-01',
 		REQUIRED = '2.23.0',
 		CATEGORY = 'Contacts',
 		DESCRIPTION = 'Get contacts suggestions from LDAP.';
@@ -81,7 +81,7 @@ class LdapContactsSuggestionsPlugin extends \RainLoop\Plugins\AbstractPlugin
 			\RainLoop\Plugins\Property::NewInstance('base_dn')->SetLabel('Search base DN')
 				->SetDescription('DN to use as the search base. Supported tokens: {domain}, {domain:dc}, {email}, {email:user}, {email:domain}, {login}, {imap:login}, {imap:host}, {imap:port}')
 				->SetDefaultValue('ou=People,dc=example,dc=com'),
-			\RainLoop\Plugins\Property::NewInstance('object_classes')->SetLabel('objectClasses to use')
+			\RainLoop\Plugins\Property::NewInstance('object_classes')->SetLabel('objectClasses')
 				->SetDescription('LDAP objectClasses to search for, comma separated list')
 				->SetDefaultValue('inetOrgPerson'),
 			\RainLoop\Plugins\Property::NewInstance('uid_attributes')->SetLabel('uid attributes')

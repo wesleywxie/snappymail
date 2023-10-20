@@ -1345,6 +1345,7 @@ const
 				color = node.color,
 				newTag = createElement('SPAN'),
 				css = newTag.style;
+			newTag.style.cssText = node.style.cssText;
 			if (face) {
 				css.fontFamily = face;
 			}
@@ -3286,7 +3287,7 @@ class Squire
 		return this.focus();
 	}
 
-	_ensureBottomLine () {
+	_ensureBottomLine() {
 		let root = this._root;
 		let last = root.lastElementChild;
 		if (!last || last.nodeName !== blockTag || !isBlock(last)) {
@@ -3296,11 +3297,11 @@ class Squire
 
 	// --- Get/Set data ---
 
-	_getHTML () {
+	_getHTML() {
 		return this._root.innerHTML;
 	}
 
-	_setHTML (html) {
+	_setHTML(html) {
 		let root = this._root;
 		let node = root;
 		empty(root);
